@@ -16,10 +16,20 @@
         android:layout_height="200dp"
         app:canLoop="true"
         />
-    <Button
-        android:layout_margin="10dp"
+    
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/OrderViewpager"
         android:layout_width="match_parent"
-        android:layout_height="100dp" />
+        android:layout_height="300dp"
+
+        android:layout_gravity="bottom"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingBottom="30dp"
+
+        >
+
+    </androidx.viewpager.widget.ViewPager>
 
 </LinearLayout>
 
