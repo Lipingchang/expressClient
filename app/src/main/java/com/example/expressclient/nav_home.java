@@ -3,21 +3,22 @@ package com.example.expressclient;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
+import com.bigkoo.convenientbanner.holder.Holder;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link nav_home.OnFragmentInteractionListenerNavHome} interface
- * to handle interaction events.
- * Use the {@link nav_home#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class nav_home extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,28 +30,8 @@ public class nav_home extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListenerNavHome mListener;
-
-    public nav_home() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment nav_home.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static nav_home newInstance(String param1, String param2) {
-        nav_home fragment = new nav_home();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private View view;
+    private ConvenientBanner convenientBanner;//顶部广告栏控件
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,14 +45,47 @@ public class nav_home extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_nav_home, container, false);
-    }
+        this.view = inflater.inflate(R.layout.fragment_nav_home, container, false);
+        convenientBanner = view.findViewById(R.id.convenientBanner);
+        ArrayList<Integer> bannerImages = new ArrayList<>();
+        for (int position = 1; position <= 3; position++){
+            int i = 0;
+            try{
+                Field idField = R.drawable.class.getDeclaredField("banner"+position);
+                i = idField.getInt(idField);
+            }catch (Exception e){
+                continue;
+            }
+            bannerImages.add( i );
+        }
+        convenientBanner.setPages(new CBViewHolderCreator(){
+            @Override
+            public Holder createHolder(View itemView) {
+                return new BannerHolder(itemView);
+            }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            @Override
+            public int getLayoutId() {
+                return R.layout.banner;
+            }
+        },bannerImages).setPageIndicator(new int[]{R.drawable.ic_page_indicator,R.drawable.ic_page_indicator_focused})
+                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_LEFT);
+        return view;
+    }
+    public class BannerHolder extends Holder<Integer>{
+        private ImageView imageView;
+        public BannerHolder(View view){
+            super(view);
+        }
+
+        @Override
+        protected void initView(View itemView) {
+            imageView = itemView.findViewById(R.id.ivPost);
+        }
+
+        @Override
+        public void updateUI(Integer data) {
+            imageView.setImageResource(data);
         }
     }
 
@@ -92,18 +106,8 @@ public class nav_home extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListenerNavHome {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }
