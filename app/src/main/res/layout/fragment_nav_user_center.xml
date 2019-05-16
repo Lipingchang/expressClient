@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+    tools:context=".nav_userCenter"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp"
+    android:paddingTop="50dp"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".nav_userCenter">
+    android:background="@drawable/ic_dashboard_black_24dp"
+    >
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/nav_userCenter" />
+        android:text="@string/nav_userCenter_title"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
-</FrameLayout>
+</LinearLayout>
+
+
