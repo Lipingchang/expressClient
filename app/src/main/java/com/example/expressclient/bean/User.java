@@ -9,6 +9,30 @@ public class User {
     String role;
     Date createTime;
     Date updateTime;
+    String telphone;
+
+    public User(String username,String password,String telphone){
+        this.username = username;
+        this.password = password;
+        this.telphone = telphone;
+    }
+    public User(int userid, String username, String telphone, String password, String role, Date createTime, Date updateTime) {
+        this.userid = userid;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.telphone = telphone;
+    }
+
+    public String getTelphone() {
+        return telphone;
+    }
+
+    public void setTelphone(String telphone) {
+        this.telphone = telphone;
+    }
 
     public Date getCreateTime() {
         return createTime;
