@@ -21,12 +21,15 @@
         android:id="@+id/OrderViewpager"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-
+        android:layout_marginTop="-40dp"
         android:layout_gravity="bottom"
         android:clipToPadding="false"
         android:overScrollMode="never"
         android:paddingBottom="30dp"
-
+        android:paddingEnd="@dimen/card_padding"
+        android:paddingLeft="@dimen/card_padding"
+        android:paddingRight="@dimen/card_padding"
+        android:paddingStart="@dimen/card_padding"
         >
 
     </androidx.viewpager.widget.ViewPager>

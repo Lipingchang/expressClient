@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
@@ -17,7 +16,7 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.example.expressclient.viewhelper.CardItem;
 import com.example.expressclient.viewhelper.CardPagerAdapter;
-import com.example.expressclient.viewhelper.DepthPageTransformer;
+import com.example.expressclient.viewhelper.ShadowTransformer;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -74,7 +73,8 @@ public class nav_home extends Fragment {
                 return R.layout.banner;
             }
         },bannerImages).setPageIndicator(new int[]{R.drawable.ic_page_indicator,R.drawable.ic_page_indicator_focused})
-                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_LEFT);
+//                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_LEFT)
+        ;
 
         viewPager = view.findViewById(R.id.OrderViewpager);
         CardPagerAdapter mCardAdapter = new CardPagerAdapter();
@@ -82,10 +82,12 @@ public class nav_home extends Fragment {
         mCardAdapter.addCardItem(new CardItem(R.string.title_2, R.string.text_1));
         mCardAdapter.addCardItem(new CardItem(R.string.title_3, R.string.text_1));
         mCardAdapter.addCardItem(new CardItem(R.string.title_4, R.string.text_1));
-//        DepthPageTransformer transformer = new DepthPageTransformer();
+
+        ShadowTransformer mCardShadowTransformer = new ShadowTransformer(viewPager, mCardAdapter);
+        mCardShadowTransformer.enableScaling(true);
 
         viewPager.setAdapter(mCardAdapter);
-//        viewPager.setPageTransformer(false, transformer);
+        viewPager.setPageTransformer(false,mCardShadowTransformer);
         viewPager.setOffscreenPageLimit(3);
 
 
