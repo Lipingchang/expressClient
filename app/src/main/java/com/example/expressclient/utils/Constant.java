@@ -2,7 +2,7 @@ package com.example.expressclient.utils;
 
 public class Constant {
     public final static String apiScheme = "http";
-    public final static String apiServer = "192.168.1.102";
+    public final static String apiServer = "192.168.1.100";
     public final static int apiPort = 8080;
     public final static String apiUrl = String.format("%s://%s:%d",apiScheme,apiServer,apiPort);
     public final static String apiRegister = String.format("%s%s",apiUrl,"/user/register");
@@ -14,7 +14,11 @@ public class Constant {
     public final static String apiBody_role = "role";
     public final static String apiBody_createtime = "createTime";
     public final static String apiBody_updatetime= "updateTime";
-    public final static String apiBody_telphone= "updateTime";
+    public final static String apiBody_telephone= "telephone";
+    public final static String apiBody_statuscode = "status";
+    public final static String apiBody_message = "message";
+    public final static int apiBody_errorcode = 500;
+
 
     public final static String sharedP_USER_INFO = "userinfo";
     public final static String sharedP_USER_NAME = "username";
@@ -27,4 +31,5 @@ public class Constant {
 
     public final static String api_username = "username";
     public final static String api_password = "password";
+    public final static String api_telephone = "telephone";
 }

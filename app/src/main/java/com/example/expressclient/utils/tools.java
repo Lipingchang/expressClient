@@ -9,10 +9,10 @@ import java.util.TimeZone;
 public class tools {
 
     public static Date string2Date(String update) {
-        int pp = update.indexOf('.');
-        update = update.substring(0,pp-1);
+//        int pp = update.indexOf('.');
+//        update = update.substring(0,pp-1);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date ret = null;
         try {
             sdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));

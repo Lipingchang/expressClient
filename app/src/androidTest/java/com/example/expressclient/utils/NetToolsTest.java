@@ -1,5 +1,7 @@
 package com.example.expressclient.utils;
 
+import android.util.Log;
+
 import com.example.expressclient.bean.User;
 
 import org.junit.Test;
@@ -10,12 +12,13 @@ public class NetToolsTest {
 
     @Test
     public void registerUser() throws Exception {
-        User uu = new User("lilili","lili");
+        User uu = new User("lilili7","lili","1212111");
         try {
             uu = NetTools.registerUser(uu);
+            Log.e("role:",uu.getRole());
         }catch (Exception e){
-            System.err.println(e.getMessage());
+            e.printStackTrace();
+            Log.e("...",e.getMessage());
         }
-        System.out.println(uu.getRole());
     }
 }

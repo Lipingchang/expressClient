@@ -1,16 +1,17 @@
 package com.example.expressclient;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
-
-public class nav_userCenter extends Fragment {
+public class nav_userCenter extends Fragment implements View.OnClickListener{
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -37,7 +38,8 @@ public class nav_userCenter extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_nav_user_center, container, false);
-
+        Button btn = view.findViewById(R.id.btn_loginregister);
+        btn.setOnClickListener(this);
         return view;
     }
 
@@ -61,5 +63,12 @@ public class nav_userCenter extends Fragment {
     public interface OnFragmentInteractionListenerNavUserCenter {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if ( v.getId() == R.id.btn_loginregister ){
+            startActivity(new Intent(getContext(),LoginSigninActivity.class));
+        }
     }
 }
