@@ -21,4 +21,15 @@ public class NetToolsTest {
             Log.e("...",e.getMessage());
         }
     }
+    @Test
+    public void login() throws Exception{
+        User uu = new User("lilili7","lili","1212111");
+        try {
+            uu = NetTools.loginUser(uu);
+            Log.e("role:",uu.getRole());
+        }catch (Exception e){
+            e.printStackTrace();
+            Log.e("...",e.getMessage());
+        }
+    }
 }

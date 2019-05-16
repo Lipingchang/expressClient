@@ -6,6 +6,7 @@ public class Constant {
     public final static int apiPort = 8080;
     public final static String apiUrl = String.format("%s://%s:%d",apiScheme,apiServer,apiPort);
     public final static String apiRegister = String.format("%s%s",apiUrl,"/user/register");
+    public final static String apiLogin = String.format("%s%s",apiUrl,"/user/login");
 
     public final static String apiBodyData = "data";
     public final static String apiBody_userid = "userId";

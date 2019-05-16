@@ -101,7 +101,6 @@ public class NetTools {
             }
         }catch (JSONException e){
             Log.d(TAG,"注册请求成功");
-//            e.printStackTrace();
         }catch (Exception ee){
             throw new Exception(ee.getMessage());
         }
@@ -120,5 +119,51 @@ public class NetTools {
 
         return ret;
 
+    }
+
+    public static User loginUser(User user) throws Exception{
+        OkHttpClient client = new OkHttpClient();
+        // 构造登陆请求
+        JSONObject juser = new JSONObject();
+        juser.put(Constant.api_username,user.getUsername());
+        juser.put(Constant.api_password,user.getPassword());
+        String load = juser.toString();
+
+        RequestBody body = RequestBody.create(JSON,load);
+        Request request = new Request.Builder()
+                .url(Constant.apiLogin)
+                .post(body)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String resstr =  response.body().string(); Log.d(TAG,resstr);
+        juser = new JSONObject(resstr);
+
+        User ret = null ;
+        try {
+            // 出错时候抛出服务器给的错误
+            if (juser.getInt(Constant.apiBody_statuscode) == Constant.apiBody_errorcode) {
+                Log.e(TAG, juser.getString(Constant.apiBody_message));
+                throw new Exception(juser.getString(Constant.apiBody_message));
+            }
+        }catch (JSONException e){
+            Log.d(TAG,"登陆请求成功");
+        }catch (Exception ee){
+            throw new Exception(ee.getMessage());
+        }
+
+        // 载入服务器返回的用户信息
+        juser = (JSONObject)juser.get(Constant.apiBodyData);
+        int id = juser.getInt(Constant.apiBody_userid);
+        String name = juser.getString(Constant.apiBody_username);
+        String pwd = juser.getString(Constant.apiBody_password);
+        String role = juser.getString(Constant.apiBody_role);
+        Date create = string2Date(juser.getString(Constant.apiBody_createtime));
+        Date update = string2Date(juser.getString(Constant.apiBody_updatetime));
+        String telephone = juser.getString(Constant.apiBody_telephone);
+
+        ret = new User(id,name,telephone,pwd,role,create,update);
+
+        return ret;
     }
 }
