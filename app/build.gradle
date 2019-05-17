@@ -16,10 +16,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main {
+            jniLibs.srcDir 'libs'
+        }
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
     implementation 'com.google.android.material:material:1.0.0-beta01'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
@@ -28,8 +33,8 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
     implementation 'android.arch.navigation:navigation-fragment:1.0.0-alpha06'
-
     // https://github.com/saiwu-bigkoo/Android-ConvenientBanner
     implementation 'com.bigkoo:convenientbanner:2.1.5'
     implementation 'androidx.recyclerview:recyclerview:1.0.0+'
+    implementation files('libs/BaiduLBS_Android.jar')
 }
