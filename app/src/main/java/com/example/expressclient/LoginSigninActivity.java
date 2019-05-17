@@ -3,6 +3,7 @@ package com.example.expressclient;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.pm.PackageManager;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -63,10 +65,12 @@ public class LoginSigninActivity extends AppCompatActivity  {
     private View mProgressView;
     private View mLoginFormView;
 
+    private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_signin);
+        context = this;
 
         mUsernameView = findViewById(R.id.username);
         mPasswordView = findViewById(R.id.password);
@@ -191,12 +195,12 @@ public class LoginSigninActivity extends AppCompatActivity  {
             mPassword = password;
             this.telephone = telephone;
         }
-
+        String errorStr = "??";
         @Override
         protected Boolean doInBackground(Integer... params) {
 
             try {
-                if ( telephone == null ){
+                if ( telephone == null || TextUtils.isEmpty(telephone) ){
                     // 登录操作
                     User uu = new User(this.username,this.mPassword,null);
                     uu = NetTools.loginUser(uu);
@@ -207,6 +211,7 @@ public class LoginSigninActivity extends AppCompatActivity  {
                     NetTools.registerUser(uu);
                 }
             } catch (Exception e) {
+                errorStr = e.getMessage();
                 return false;
             }
 
@@ -219,12 +224,13 @@ public class LoginSigninActivity extends AppCompatActivity  {
             mAuthTask = null;
             showProgress(false);
 
-            if (success && telephone==null) {
+            if (success && TextUtils.isEmpty(telephone)) { // 登陆ok
                 finish();
-            } else if ( telephone != null ){
-                mPasswordView.clearComposingText();
-                mTelephone.clearComposingText();
+            } else if ( !TextUtils.isEmpty(telephone) ){ // 注册ok
+                mPasswordView.getText().clear();
+                mTelephone.getText().clear();
                 msigninBox.setChecked(false);
+                Toast.makeText(context,"注册成功",Toast.LENGTH_LONG).show();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
