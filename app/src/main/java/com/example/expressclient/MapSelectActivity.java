@@ -60,6 +60,9 @@ public class MapSelectActivity extends AppCompatActivity implements View.OnClick
     private Context context;
     private LatLng src;
     private LatLng dst;
+    private PoiInfo srcDescription;
+    private PoiInfo dstDescription;
+
 
     private MapView mMapView = null;
     @Override
@@ -179,10 +182,14 @@ public class MapSelectActivity extends AppCompatActivity implements View.OnClick
                     Log.d(TAG,info.toString());
                 PoiInfo info = poiResult.getAllPoi().get(0);
                 LatLng point = info.getLocation();
-                if ( isSrc )
+                if ( isSrc ) {
                     src = point;
-                else
+                    srcDescription = info;
+                }
+                else {
                     dst = point;
+                    dstDescription = info;
+                }
 
                 BitmapDescriptor bitmap = isSrc ?
                         BitmapDescriptorFactory.fromResource(R.drawable.ic_express_send_img):
