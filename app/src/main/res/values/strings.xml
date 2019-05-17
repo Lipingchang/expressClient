@@ -4,6 +4,15 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
+    <string name="draw_point">查找</string>
+    <string name="draw_route">路线</string>
+    <string name="confirm">确定</string>
+
+    <string name="src_province">发件-省市区</string>
+    <string name="src_street">发件-街道</string>
+    <string name="dst_province">收件-省市区</string>
+    <string name="dst_street">收件-街道</string>
+
     <string name="nav_home">主页</string>
     <string name="nav_newSend">寄件</string>
     <string name="nav_userCenter">个人中心</string>
