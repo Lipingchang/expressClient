@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 
 import androidx.annotation.NonNull;
 
+import com.example.expressclient.bean.User;
+import com.example.expressclient.utils.NetTools;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,6 +38,8 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,26 +50,13 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class LoginSigninActivity extends AppCompatActivity  {
 
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
     private UserLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
+    private EditText mTelephone;
     private CheckBox msigninBox;
     private boolean isSignin;
     private View msignInView;
@@ -103,6 +94,8 @@ public class LoginSigninActivity extends AppCompatActivity  {
         mProgressView = findViewById(R.id.login_progress);
         msignInView = findViewById(R.id.signininput);
         msigninBox = findViewById(R.id.ckb_is_signin);
+        mTelephone = findViewById(R.id.telephone);
+
         msigninBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -127,38 +120,52 @@ public class LoginSigninActivity extends AppCompatActivity  {
         mUsernameView.setError(null);
         mPasswordView.setError(null);
 
-        // Store values at the time of the login attempt.
+        // 获取输入的字符串
         String username = mUsernameView.getText().toString();
         String password = mPasswordView.getText().toString();
+        String telephone = mTelephone.getText().toString();
 
-        boolean cancel = false;
-        View focusView = null;
+        boolean cancel = false; // 有没有出错
+        View focusView = null;  // 出错的框
 
-        // 注册 密码强度检查
-        if (isSignin && !TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView; j
-            cancel = true;
-        }else if ( !isSignin && TextUtils.isEmpty(password) ){
-            // 登陆 密码字段 是否为空
-            mPasswordView.setError(getString(R.string.error_field_required));
-            focusView = mPasswordView;
-            cancel = true;
+        if ( isSignin ){
+            // 注册的检查
+            if ( TextUtils.isEmpty(telephone) ){
+                focusView = mTelephone;
+                mTelephone.setError(getString(R.string.error_field_required));
+                cancel = true;
+            }
+            if ( !isPasswordValid(password) ){
+                focusView = mPasswordView;
+                mPasswordView.setError(getString(R.string.error_invalid_password));
+                cancel = true;
+            }
+            if ( TextUtils.isEmpty(username) ){
+                focusView = mUsernameView;
+                mUsernameView.setError(getString(R.string.error_field_required));
+                cancel = true;
+            }
+        }else{
+            // 登录的检查
+            if ( TextUtils.isEmpty(password) ){
+                focusView = mPasswordView;
+                ((EditText) focusView).setError(getString(R.string.error_field_required));
+                cancel = true;
+            }
+            if ( TextUtils.isEmpty(username) ){
+                focusView = mUsernameView;
+                ((EditText) focusView).setError(getString(R.string.error_field_required));
+                cancel = true;
+            }
         }
 
-        // 用户名不能为空
-        if (TextUtils.isEmpty(username)) {
-            mUsernameView.setError(getString(R.string.error_field_required));
-            focusView = mUsernameView;
-            cancel = true;
-        }
 
         if (cancel) {
             focusView.requestFocus();
         } else {
             showProgress(true);
-            mAuthTask = new UserLoginTask(username, password);
-            mAuthTask.execute((Void) null);
+            mAuthTask = new UserLoginTask(username, password,telephone);
+            mAuthTask.execute();
         }
     }
 
@@ -173,36 +180,37 @@ public class LoginSigninActivity extends AppCompatActivity  {
 
 
 
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserLoginTask extends AsyncTask<Integer, Void, Boolean> {
 
         private final String username;
         private final String mPassword;
+        private final String telephone;
 
-        UserLoginTask(String email, String password) {
+        UserLoginTask(String email, String password,String telephone) {
             username = email;
             mPassword = password;
+            this.telephone = telephone;
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+        protected Boolean doInBackground(Integer... params) {
 
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
+                if ( telephone == null ){
+                    // 登录操作
+                    User uu = new User(this.username,this.mPassword,null);
+                    uu = NetTools.loginUser(uu);
+                    NetTools.cacheUser(uu);
+
+                } else {
+                    User uu = new User(this.username,this.mPassword,this.telephone);
+                    NetTools.registerUser(uu);
+                }
+            } catch (Exception e) {
                 return false;
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(username)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
 
-            // TODO: register the new account here.
             return true;
         }
 
@@ -211,13 +219,19 @@ public class LoginSigninActivity extends AppCompatActivity  {
             mAuthTask = null;
             showProgress(false);
 
-            if (success) {
+            if (success && telephone==null) {
                 finish();
+            } else if ( telephone != null ){
+                mPasswordView.clearComposingText();
+                mTelephone.clearComposingText();
+                msigninBox.setChecked(false);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }
         }
+
+
 
         @Override
         protected void onCancelled() {
