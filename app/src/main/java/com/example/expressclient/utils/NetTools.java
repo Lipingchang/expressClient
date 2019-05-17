@@ -43,6 +43,26 @@ public class NetTools {
         User uu = new User(userid,username,tel,password,role,createTime,updateTime);
         return uu;
     }
+    public static boolean cleanUser(){
+        SharedPreferences.Editor editor = null;
+        try {
+            SharedPreferences pref = context.getSharedPreferences(Constant.sharedP_USER_INFO, Context.MODE_PRIVATE);
+            editor = pref.edit();
+            editor.remove(Constant.sharedP_USER_ID);
+            editor.remove(Constant.sharedP_USER_NAME);
+            editor.remove(Constant.sharedP_USER_PWD);
+            editor.remove(Constant.sharedP_USER_ROLE);
+            editor.remove(Constant.sharedP_USER_CREATE_TIME);
+            editor.remove(Constant.sharedP_USER_UPDATE_TIME);
+            editor.remove(Constant.sharedP_USER_TELPHONE);
+            editor.commit();
+        }catch (Exception e){
+            if ( editor != null )
+                editor.clear();
+            return false;
+        }
+        return true;
+    }
     public static boolean cacheUser(User uu){
         int userid = uu.getUserid();
         String username = uu.getUsername();

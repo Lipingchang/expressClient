@@ -5,10 +5,18 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.example.expressclient.bean.User;
+import com.example.expressclient.utils.NetTools;
+
+import org.w3c.dom.Text;
 
 
 public class nav_userCenter extends Fragment implements View.OnClickListener{
@@ -20,7 +28,9 @@ public class nav_userCenter extends Fragment implements View.OnClickListener{
     private String mParam2;
 
     private OnFragmentInteractionListenerNavUserCenter mListener;
-
+    private Button btn;
+    private boolean btn_logout = false;
+    private TextView tv_username;
     public nav_userCenter() {
         // Required empty public constructor
     }
@@ -38,8 +48,9 @@ public class nav_userCenter extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_nav_user_center, container, false);
-        Button btn = view.findViewById(R.id.btn_loginregister);
+        btn = view.findViewById(R.id.btn_loginregister);
         btn.setOnClickListener(this);
+        tv_username = view.findViewById(R.id.tv_username);
         return view;
     }
 
@@ -51,6 +62,18 @@ public class nav_userCenter extends Fragment implements View.OnClickListener{
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListenerNavUserCenter");
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        User uu = NetTools.loadCachedUser();
+        if ( uu != null ){ // 用户登陆了
+            btn.setText(getString(R.string.logout));
+            btn_logout = true;
+            tv_username.setText(uu.getUsername());
+            tv_username.setVisibility(View.VISIBLE);
         }
     }
 
@@ -67,8 +90,15 @@ public class nav_userCenter extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        if ( v.getId() == R.id.btn_loginregister ){
+        if ( v.getId() == R.id.btn_loginregister && !btn_logout){
             startActivity(new Intent(getContext(),LoginSigninActivity.class));
+        }
+        if ( v.getId() == R.id.btn_loginregister && btn_logout){
+            // 登出
+            btn_logout = false;
+            NetTools.cleanUser();
+            btn.setText(R.string.loginsignup);
+            tv_username.setVisibility(View.GONE);
         }
     }
 }

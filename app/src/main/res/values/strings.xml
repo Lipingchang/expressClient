@@ -10,6 +10,7 @@
     <string name="nav_userCenter_title">我的快物流</string>
 
     <string name="loginsignup">注册/登录</string>
+    <string name="logout">退出</string>
     <string name="averdescription">用户头像</string>
 
     <string name="addressbook">地址簿</string>
