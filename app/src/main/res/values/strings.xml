@@ -22,13 +22,14 @@
     <string name="prompt_username">名字</string>
     <string name="prompt_password">密码</string>
     <string name="prompt_telephone">手机</string>
-    <string name="action_sign_in">登陆</string>
+    <string name="action_sign_in">注册</string>
+    <string name="action_login">登陆</string>
     <string name="ckb_sing_in">注册</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">密码太短</string>
+    <string name="error_invalid_password">密码太短😱😱</string>
     <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
+    <string name="error_field_required">不能为空😱😱</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>

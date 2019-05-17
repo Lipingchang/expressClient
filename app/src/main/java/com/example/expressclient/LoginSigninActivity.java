@@ -23,6 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -66,6 +67,7 @@ public class LoginSigninActivity extends AppCompatActivity  {
     private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
     private CheckBox msigninBox;
+    private boolean isSignin;
     private View msignInView;
     private View mProgressView;
     private View mLoginFormView;
@@ -105,6 +107,13 @@ public class LoginSigninActivity extends AppCompatActivity  {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 msignInView.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+                isSignin = isChecked;
+                if ( isChecked ) {
+                    signButton.setText(getString(R.string.action_sign_in));
+                } else {
+                    signButton.setText(getString(R.string.action_login));
+                }
+
             }
         });
     }
@@ -125,14 +134,19 @@ public class LoginSigninActivity extends AppCompatActivity  {
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        // 注册 密码强度检查
+        if (isSignin && !TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = mPasswordView; j
+            cancel = true;
+        }else if ( !isSignin && TextUtils.isEmpty(password) ){
+            // 登陆 密码字段 是否为空
+            mPasswordView.setError(getString(R.string.error_field_required));
             focusView = mPasswordView;
             cancel = true;
         }
 
-        // Check for a valid email address.
+        // 用户名不能为空
         if (TextUtils.isEmpty(username)) {
             mUsernameView.setError(getString(R.string.error_field_required));
             focusView = mUsernameView;
@@ -140,36 +154,25 @@ public class LoginSigninActivity extends AppCompatActivity  {
         }
 
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
             showProgress(true);
             mAuthTask = new UserLoginTask(username, password);
             mAuthTask.execute((Void) null);
         }
     }
 
-
     private boolean isPasswordValid(String password) {
         return password.length() > 4;
     }
 
     private void showProgress(final boolean show) {
-
         mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
         mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-
     }
 
 
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String username;
