@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +14,9 @@ import android.widget.ImageView;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
+import com.example.expressclient.viewhelper.CardItem;
+import com.example.expressclient.viewhelper.CardPagerAdapter;
+import com.example.expressclient.viewhelper.ShadowTransformer;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -32,6 +35,7 @@ public class nav_home extends Fragment {
     private OnFragmentInteractionListenerNavHome mListener;
     private View view;
     private ConvenientBanner convenientBanner;//顶部广告栏控件
+    private ViewPager viewPager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,7 +73,24 @@ public class nav_home extends Fragment {
                 return R.layout.banner;
             }
         },bannerImages).setPageIndicator(new int[]{R.drawable.ic_page_indicator,R.drawable.ic_page_indicator_focused})
-                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_LEFT);
+//                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_LEFT)
+        ;
+
+        viewPager = view.findViewById(R.id.OrderViewpager);
+        CardPagerAdapter mCardAdapter = new CardPagerAdapter();
+        mCardAdapter.addCardItem(new CardItem(R.string.title_1, R.string.text_1));
+        mCardAdapter.addCardItem(new CardItem(R.string.title_2, R.string.text_1));
+        mCardAdapter.addCardItem(new CardItem(R.string.title_3, R.string.text_1));
+        mCardAdapter.addCardItem(new CardItem(R.string.title_4, R.string.text_1));
+
+        ShadowTransformer mCardShadowTransformer = new ShadowTransformer(viewPager, mCardAdapter);
+        mCardShadowTransformer.enableScaling(true);
+
+        viewPager.setAdapter(mCardAdapter);
+        viewPager.setPageTransformer(false,mCardShadowTransformer);
+        viewPager.setOffscreenPageLimit(3);
+
+
         return view;
     }
     public class BannerHolder extends Holder<Integer>{

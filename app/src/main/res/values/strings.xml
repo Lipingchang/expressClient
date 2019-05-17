@@ -16,7 +16,39 @@
     <string name="nav_home">主页</string>
     <string name="nav_newSend">寄件</string>
     <string name="nav_userCenter">个人中心</string>
+    <string name="nav_userCenter_title">我的快物流</string>
+
+    <string name="loginsignup">注册/登录</string>
+    <string name="logout">退出</string>
+    <string name="averdescription">用户头像</string>
+
+    <string name="addressbook">地址簿</string>
+
+    <string name="title_1">Cool card</string>
+    <string name="title_2">Ok card</string>
+    <string name="title_3">Bad card</string>
+    <string name="title_4">Ugly card</string>
+
+    <string name="text_1">Lorem ipsum dolor sit amet, consectetur adipiscing elit.  Etiam eget ligula eu lectus lobortis condimentum.</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_login_signin">登录</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_username">名字</string>
+    <string name="prompt_password">密码</string>
+    <string name="prompt_telephone">手机</string>
+    <string name="action_sign_in">注册</string>
+    <string name="action_login">登陆</string>
+    <string name="ckb_sing_in">注册</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">密码太短😱😱</string>
+    <string name="error_incorrect_password">密码错了😱😱</string>
+    <string name="error_field_required">不能为空😱😱</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
 </resources>
